@@ -1,0 +1,1248 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // functions
+    function isAdminGlobal() {
+          return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+        }
+
+    function isEditorGlobal() {
+        return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "editor";
+      }
+
+    function isJudge() {
+        return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.judge == true;
+      }
+
+    // tokens can only be changed via admin
+    match /authTokens/{tokenID} {
+      allow read, create, update, delete: if false;
+    }
+
+    match /calendly/{calendlyID} {
+      allow read, create, update: if true;
+      allow delete: if false
+    }
+
+    match /timezones/{timezoneID} {
+      allow read, create, update, delete: if false;
+    }
+
+    match /appointments/{appointmentId} {
+      allow read, create, update: if true;
+      allow delete: if false
+    }
+
+    match /sbplans/{sbPlanID} {
+      allow read: if true;
+      allow create, update, delete: if isAdminGlobal();
+    }
+
+    match /referrals/{refferalId} {
+      allow read, create: if request.auth.uid != null;
+      allow update, delete: if false;
+    }
+
+    match /gptPrompts/{promptId} {
+      allow read: if true;
+      allow update, create, delete: if isAdminGlobal();
+    }
+
+    match /gptResponses/{responseId} {
+      allow create: if request.auth.uid != null;
+      allow read: if isAdminGlobal();
+      allow update, delete: if false;
+    }
+
+    match /bootcamps/{bootcampID} {
+      allow read: if true;
+      allow create, update, delete: if isAdminGlobal();
+    }
+
+    match /mixpanelCohorts/{cohortID} {
+      allow read, create, update, delete: if isAdminGlobal();
+
+      match /members/{cohortMemberID} {
+        allow read, create, update, delete: if isAdminGlobal();
+      }
+    }
+
+    match /notificationTemplates/{templateID} {
+      allow read, create, update, delete: if isAdminGlobal();
+    }
+
+    match /awards/{awardID} {
+      allow read: if true;
+      allow create, update, delete: if isAdminGlobal();
+    }
+
+    match /achievers/{achieverID} {
+      allow read: if true;
+      allow create, update, delete: if isAdminGlobal();
+    }
+
+    match /dailyRewardConfiguration/{dailyRewardConfigID} {
+      allow read: if request.auth.uid != null;
+      allow create, update, delete: if isAdminGlobal();
+    }
+
+    match /config/{configID} {
+      allow read: if true;
+      allow update: if isAdminGlobal();
+      allow create, delete: if false;
+    }
+
+    match /slots/{slotID} {
+      allow read: if true;
+      allow create, update, delete: if isAdminGlobal();
+
+      match /slotBooking/{bookingID} {
+        allow read, create: if true;
+        allow update: if request.auth.uid != null;
+        allow delete: if false;
+      }
+    }
+
+    
+
+    match /turn/{turnID} {
+      allow read: if request.auth.uid != null;
+      allow create, update, delete: if false;
+    }
+
+    match /gifts/{giftID} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
+
+    match /casts/{castID} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
+    
+    match /stories/{storyID} {
+      allow read: if true;
+      allow create, delete, update: if isAdminGlobal();
+    }
+
+    match /sbRewards/{rewardID} {
+      allow read: if true;
+      allow update: if request.auth.uid != null;
+      allow create, delete: if isAdminGlobal();
+    }
+
+    match /antStreams/{antStreamID} {
+      allow create, update, delete, read: if request.auth.uid != null
+    }
+
+    match /reports/{reportID} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
+
+    match /taskGames/{gameId} {
+      allow read, create, update, delete: if false;
+      
+      match /summaries/{summaryId} {
+        allow read: if true;
+      }
+    }
+
+    match /testimonials/{testimonialID} {
+      allow read: if true;
+      allow create, update: if request.auth.uid != null;
+      allow delete: if false
+    }
+
+    // match /goals/{goalID} {
+    //   allow read: if true;
+    //   allow create, update, delete: if isAdminGlobal();
+    // }
+    match /appSubscriptions/{planID}{
+      allow read: if true;
+      allow create, update, delete: if false;
+
+      match /userSubs/{uid} {
+        allow read: if request.auth.uid != null;
+        allow create, update: if true;
+        // allow create, update: if request.auth.uid != null && request.auth.uid == request.resource.data.uid;
+        allow delete: if false;
+      }
+    }
+
+    match /mixpanelUsers/{userID} {
+      allow create, update: if true;
+      allow read, delete: if isAdminGlobal();
+    }
+
+    match /subTasks/{subTaskID} {
+      allow read: if true;
+      allow delete: if isAdminGlobal();
+      allow create, update: if request.auth.uid != null;
+
+
+      match /ingredients/{ingredientID} {
+        allow read: if request.auth.uid != null;
+        allow create, update, delete: if isAdminGlobal();
+      }
+    }
+
+    match /tasks/{taskID} {
+      allow read: if true;
+      allow delete: if isAdminGlobal();
+      allow create, update: if request.auth.uid != null;
+
+      match /taskProgress/{progressID} {
+        allow read: if true;
+        allow create,update,delete: if isAdminGlobal() || isJudge();
+      }
+
+      match /streams/{streamID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid) || isAdminGlobal();
+        allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.uid) || isAdminGlobal();
+
+        match /private/{privateID} {
+          allow read: if request.auth.uid != null;
+          allow create, update: if request.auth.uid != null && request.auth.uid == request.resource.data.uid;
+          allow delete: if false;
+        }
+      }
+    }
+
+    match /gptTasks/{gptTaskID} {
+      allow read: if request.auth.uid != null;
+      allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.userId);
+      allow update: if (request.auth.uid != null && request.auth.uid == resource.data.userId);
+      allow delete: if false;
+    }
+
+    match /workouts/{workoutID} {
+      allow read: if true;
+      allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.ownerUID) || isAdminGlobal();
+      allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.ownerUID) || isAdminGlobal();
+
+      match /exercises/{exerciseID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.ownerUID) || isAdminGlobal();
+        allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.ownerUID) || isAdminGlobal();
+
+        match /streams/{streamID} {
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid) || isAdminGlobal();
+          allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.uid) || isAdminGlobal();
+        }
+      }
+
+      match /nutrition/{nutID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.ownerUID) || isAdminGlobal();
+        allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.ownerUID) || isAdminGlobal();
+      }
+
+      match /lives/{liveID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.ownerUID) || isAdminGlobal();
+        allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.ownerUID) || isAdminGlobal();
+
+        match /streams/{streamID} {
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid) || isAdminGlobal();
+          allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.uid) || isAdminGlobal();
+        }
+      }
+    }
+
+    match /prizeSummary/{prizeSummaryID} {
+      allow read: if true;
+      allow create, update, delete: if false;
+    }
+
+    match /prizes/{prizeID} {
+      allow read: if true;
+      allow create, update, delete: if false;
+    }
+
+    match /{somePath=**}/postsV2/{postID} {
+      allow read: if true;
+    }
+
+    match /{somePath=**}/activities/{activityId} {
+      allow read: if request.auth.uid != null;
+    }
+
+    match /{somePath=**}/rooms/{roomId} {
+      allow read: if isAdminGlobal();
+    }
+
+    match /{somePath=**}/myPurchases/{purchaseId} {
+      allow read: if request.auth.uid != null;
+    }
+
+    match /{somePath=**}/slotBooking/{bookingId} {
+      allow read: if request.auth.uid != null;
+    }
+
+
+    
+    match /postsV2/{postID} {
+      allow create: if (request.auth.uid != null);
+      allow update: if request.auth.uid != null;
+      allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+      match /clappers/{clapperID} {
+        allow read: if true;
+        allow create, update: if request.auth.uid != null;
+        allow delete: if false;
+
+        match /claps/{clapID} {
+          allow read: if true;
+          allow create, update: if request.auth.uid != null;
+          allow delete: if false;
+        }
+      }
+
+      // replies level-1
+      match /posts/{postID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+        allow update: if request.auth.uid != null;
+        allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+        match /clappers/{clapperID} {
+          allow read: if true;
+          allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+          allow delete: if false;
+
+          match /claps/{clapID} {
+            allow read: if true;
+            allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+            allow delete, update: if false;
+          }
+        }
+
+        // replies level-2
+        match /posts/{postID}{
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+          allow update: if request.auth.uid != null;
+          allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+          match /clappers/{clapperID} {
+            allow read: if true;
+            allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+            allow delete: if false;
+
+            match /claps/{clapID} {
+              allow read: if true;
+              allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+              allow delete, update: if false;
+            }
+          }
+        }
+      }
+    }
+
+    match /sbEvents/{sbEventID} {
+      allow read: if true;
+      allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.ownerUID) || isAdminGlobal();
+      allow update: if request.auth.uid != null
+      allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.ownerUID) || isAdminGlobal();
+
+      match /prizeSummary/{prizeID} {
+        allow read: if true;
+        allow create, update, delete: if false;
+      }
+
+      match /rounds/{roundId} {
+        allow read: if true;
+        allow create, update, delete: if isAdminGlobal();
+      }
+
+      match /level/{levelID} {
+        allow read: if true;
+        allow create, update, delete: if isAdminGlobal();
+
+        match /userRanksV2/{UID} {
+          allow read: if request.auth.uid != null;
+          allow create, update, delete: if false; 
+        }
+
+      }
+
+      match /sprintDetails/{sprintDetailID} {
+        allow read: if true;
+        allow create, update, delete: if isAdminGlobal();
+      }
+
+      match /advertisementDoc/{addDocId} {
+        allow read: if true;
+        allow create, update: if isAdminGlobal();
+        allow delete: if false;
+      }
+
+      match /joinRequests/{requestID} {
+        allow read, update: if request.auth.uid != null;
+        allow create: if request.auth.uid != null && request.auth.uid == request.resource.data.requestedBy;
+        allow delete: if false;
+      }
+
+      match /badges/{badgeID} {
+        allow read: if true;
+        allow create, update, delete: if isAdminGlobal() || isJudge();
+
+        match /badgeProgress/{badgeUID} {
+          allow read: if request.auth.uid != null;
+          allow create, update: if request.auth.uid == badgeUID;
+          allow delete: if false;
+        }
+
+        match /faq/{faqID} {
+          allow read: if true;
+          allow create, update, delete: if isAdminGlobal() || isJudge();
+        }
+
+        match /reviews/{faqID} {
+          allow read: if true;
+          allow create, update, delete: if isAdminGlobal() || isJudge();
+        }
+
+        match /badgeSections/{sectionId} {
+          allow read, create, update: if request.auth.uid != null;
+          allow delete: if false;
+        }
+
+        
+      }
+
+      match /benefits/{benefitID} {
+        allow read: if true;
+        allow create, update, delete: if isAdminGlobal() || isJudge();
+      }
+
+      match /campaign/{campaignPostId} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+        allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+      }
+
+      match /configuration/{configID} {
+        allow read: if true;
+        allow create: if isAdminGlobal();
+        allow delete: if false;
+      }
+
+      match /inviteCodes/{codeID} {
+        allow read: if true;
+        allow create, update, delete: if false;
+      }
+
+      match /userRanks/{rankID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid) || isAdminGlobal()
+        allow update: if isAdminGlobal();
+        allow delete: if false
+      }
+
+      match /coachRanks/{rankID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid) || isAdminGlobal()
+        allow update: if isAdminGlobal();
+        allow delete: if false;
+      }
+
+      match /program/{sessionID} {
+        allow read: if true;
+        allow create, update: if request.auth.uid != null;
+        allow delete: if request.auth.uid != null && request.auth.uid == resource.data.creatorId;
+
+        match /clappers/{clapperID} {
+          allow read: if true;
+          allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+          allow delete: if false;
+
+          match /claps/{clapID} {
+            allow read: if true;
+            allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+            allow delete, update: if false;
+          }
+        }
+      }
+
+      match /eventKPIs/{kpiID} {
+        allow read: if true;
+        allow create, update: if request.auth.uid != null;
+        allow delete: if false;
+      }
+
+      match /clappers/{clapperID} {
+        allow read: if true;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+        allow delete: if false;
+
+        match /claps/{clapID} {
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+          allow delete, update: if false;
+        }
+      }
+
+      match /claps/{clapID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+        allow delete, update: if false;
+      }
+
+      match /cohorts/{cohortID}{
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid) || isAdminGlobal();
+        allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.uid) || isAdminGlobal();
+      }
+
+      match /postsV2/{postID}{
+        allow read: if request.auth.uid != null;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId) || isAdminGlobal();
+        // allow update: if request.auth.uid != null;
+        allow update, delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId) || isAdminGlobal();
+
+        match /clappers/{clapperID} {
+          allow read: if true;
+          allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+          allow delete: if false;
+
+          match /claps/{clapID} {
+            allow read: if true;
+            allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+            allow delete, update: if false;
+          }
+        }
+
+        // replies level-1
+        match /posts/{postID}{
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+          allow update: if request.auth.uid != null;
+          allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+          match /clappers/{clapperID} {
+            allow read: if true;
+            allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+            allow delete: if false;
+
+            match /claps/{clapID} {
+              allow read: if true;
+              allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+              allow delete, update: if false;
+            }
+          }
+
+          // replies level-2
+          match /posts/{postID}{
+            allow read: if true;
+            allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+            allow update: if request.auth.uid != null;
+            allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+            match /clappers/{clapperID} {
+              allow read: if true;
+              allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+              allow delete: if false;
+
+              match /claps/{clapID} {
+                allow read: if true;
+                allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+                allow delete, update: if false;
+              }
+            }
+          }
+        }
+      }
+
+
+      match /postsV3/{postID}{
+        allow read: if request.auth.uid != null;
+        allow create: if (request.auth.uid != null) || isAdminGlobal();
+        allow update: if request.auth.uid != null;
+        allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId) || isAdminGlobal();
+
+        match /clappers/{clapperID} {
+          allow read: if true;
+          allow create, update, delete: if request.auth.uid != null;
+
+          match /claps/{clapID} {
+            allow read: if true;
+            allow create, update: if request.auth.uid != null;
+            allow delete: if false;
+          }
+        }
+
+        // replies level-1
+        match /posts/{postID}{
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+          allow update: if request.auth.uid != null;
+          allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+          match /clappers/{clapperID} {
+            allow read: if true;
+            allow create, update, delete: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId);
+            
+
+            match /claps/{clapID} {
+              allow read: if true;
+              allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+              allow delete, update: if false;
+            }
+          }
+
+          // replies level-2
+          match /posts/{postID}{
+            allow read: if true;
+            allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+            allow update: if request.auth.uid != null;
+            allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+            match /clappers/{clapperID} {
+              allow read: if true;
+              allow create, update, delete: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId);
+              
+
+              match /claps/{clapID} {
+                allow read: if true;
+                allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+                allow delete, update: if false;
+              }
+            }
+          }
+        }
+      }
+
+
+
+      
+
+      match /posts/{postID} {
+        allow read: if true;
+        allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+        allow update: if request.auth.uid != null;
+        allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+        match /clappers/{clapperID} {
+          allow read: if true;
+          allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+          allow delete: if false;
+
+          match /claps/{clapID} {
+            allow read: if true;
+            allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+            allow delete, update: if false;
+          }
+        }
+
+        match /claps/{clapID} {
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+          allow delete, update: if false;
+        }
+
+        match /posts/{postID} {
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.creatorId);
+          allow update: if request.auth.uid != null;
+          allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.creatorId);
+
+          match /clappers/{clapperID} {
+            allow read: if true;
+            allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+            allow delete: if false;
+
+            match /claps/{clapID} {
+              allow read: if true;
+              allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+              allow delete, update: if false;
+            }
+          }
+
+          match /claps/{clapID} {
+            allow read: if true;
+            allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+            allow delete, update: if false;
+          }
+        }
+      }
+    }
+
+    match /reminders/{reminderID} {
+      allow create, update: if isAdminGlobal();
+      allow delete: if false;
+      allow read: if request.auth.uid != null;
+    }
+
+    match /listings/{listingID} {
+      // only signedIn users can create their own listings 
+      allow create: if request.auth.uid != null && 
+        request.resource.data.userUID == request.auth.uid; 
+
+      // only update your own listings 
+      allow update: if request.auth.uid != null &&
+        resource.data.userUID == request.auth.uid &&
+        // cannot change rating
+        request.resource.data.rating == resource.data.rating; 
+
+      // only read your own listings 
+      allow read: if request.auth.uid != null &&
+        resource.data.userUID == request.auth.uid;
+
+      // delete action is not allowed
+      allow delete: if false;
+    }
+
+    match /users/{userID} {
+      // can only create your own user 
+      allow create: if request.auth.uid != null &&
+        request.resource.data.uid == request.auth.uid;
+
+      // allow read: if (request.auth.uid != null) || isAdminGlobal() || isJudge();
+      allow read: if true;
+
+      // can only update your own user 
+      allow update: if (request.auth.uid != null && resource.data.uid == request.auth.uid) || isAdminGlobal();
+
+      // delete action is not allowed
+      allow delete: if request.auth.uid != null && resource.data.uid == request.auth.uid;
+
+      match /subscriptions/{subscriptionID} {
+        allow read: if true;
+        allow create, update: if request.auth.uid != null && request.auth.uid == userID;
+        allow delete: if isAdminGlobal();
+      }
+
+      match /streaks/{streakID} {
+        allow create, update: if request.auth.uid == userID;
+        allow read: if request.auth.uid != null;
+        allow delete: if isAdminGlobal();
+      }
+
+      match /powerup/{powerUpID} {
+        allow read, create, update: if request.auth.uid == userID;
+        allow delete: if isAdminGlobal();
+      }
+      
+
+      match /healthCheckins/{checkinID} {
+        allow read, create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if false;
+      }
+
+      match /loggedSymptoms/{symptomID} {
+        allow read, create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if false;
+      }
+
+      match /periodDates/{paidDateID} {
+        allow read, create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if false;
+      }
+
+      match /cycles/{cycleID} {
+        allow read, create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if false;
+      }
+
+      match /goalAchievementPath/{achievementPathID} {
+        allow read, create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if isAdminGlobal();
+      }
+
+      match /dailyEnergy/{dailyEnergyID} {
+        allow read: if request.auth.uid != null;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if isAdminGlobal();
+      }
+
+      match /dailySleep/{dailySleepID} {
+        allow read: if request.auth.uid != null;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if isAdminGlobal();
+      }
+
+      match /dailyMood/{dailyMoodID} {
+        allow read: if request.auth.uid != null;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if isAdminGlobal();
+      }
+
+      match /dailyWeight/{dailyWeightID} {
+        allow read: if request.auth.uid != null;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if isAdminGlobal();
+      }
+
+      match /dailyReward/{dailyRewardID} {
+        allow read: if request.auth.uid != null;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if isAdminGlobal();
+      }
+
+       match /followups/{followupID} {
+        allow read: if request.auth.uid != null;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow delete: if isAdminGlobal();
+      }
+
+      match /nutritionTarget/{targetID} {
+        allow read: if request.auth.uid == userID || isAdminGlobal();
+        allow create, update, delete: if isAdminGlobal();
+      }
+      
+      match /rooms/{roomID} {
+        allow read, create, update, delete: if request.auth.uid != null && request.auth.uid == userID;
+
+        match /messages/{messageID} {
+          allow read: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+          allow create, update: if request.auth.uid != null && request.auth.uid == userID;
+          allow delete: if false;
+        }        
+      }
+
+      match /autoRooms/{roomID} {
+        allow read, create, update: if request.auth.uid != null && request.auth.uid == userID;
+        allow delete: if false;
+
+        match /autoMessages/{messageID} {
+          allow read: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+          allow create, update: if request.auth.uid != null && request.auth.uid == userID;
+          allow delete: if false;
+        }        
+      }
+
+      match /dayRecommendations/{recID} {
+        allow read, create, update: if (request.auth.uid != null);
+        allow delete: if isAdminGlobal();
+      }
+
+      match /revenueCat/{revCatDoc} {
+        allow read, create, update: if (request.auth.uid != null && request.auth.uid == userID);
+        allow delete: if false;
+      }
+
+      match /journey/{journeyID} {
+        allow read, create, update, delete: if request.auth.uid != null && request.auth.uid == userID;
+      }
+
+      match /notifee/{notifID} {
+        allow read, update, create, delete: if request.auth.uid != null && request.auth.uid == userID;
+      }
+
+      match /myPurchases/{purchaseID} {
+        allow read, create, update: if request.auth.uid != null;
+        allow delete: if false;
+      }
+
+      match /steps/{stepDocID} {
+        allow read, create, update: if request.auth.uid != null;
+        allow delete: if false;
+      }
+      
+      match /nutritions/{nutritionsID} {
+        allow read, create, update: if request.auth.uid != null;
+        allow delete: if false;
+      }
+
+      match /dailyGoals/{goalObjID} {
+        allow read: if request.auth.uid != null;
+        allow delete: if false;
+        allow create, update: if request.auth.uid != null;
+      }
+
+      match /nutrition/{nutritionID} {
+        allow read, create, update: if request.auth.uid != null;
+        allow delete: if false;
+      }
+
+      match /activities/{activityID} {
+        allow read, create, update: if request.auth.uid != null;
+        allow delete: if isAdminGlobal();
+
+        match /raw/{rawActivityID} {
+          allow read: if request.auth.uid != null;
+          allow create, update, delete: if isAdminGlobal();
+        }
+
+        match /activityReviews/{reviewID} {
+          allow read: if request.auth.uid != null;
+          allow create, update, delete: if isAdminGlobal() || isJudge();
+        }
+
+        match /tickets/{ticketID} {
+          allow read: if request.auth.uid != null;
+          allow create, update: if (request.auth.uid != null && request.resource.data.createdBy == request.auth.uid) || isAdminGlobal() || isJudge();
+          allow delete: if isAdminGlobal();
+        }
+      }
+
+      match /visitors/{visitorID} {
+        allow read: if false;
+        allow create: if request.auth.uid != null;
+        allow delete: if false;
+        allow update: if false;
+      }
+
+      match /payments/{paymentID} {
+        allow read: if true;
+        allow create, delete, update: if false;
+      }
+
+      match /registrations/{registerID} {
+        allow read: if true;
+        allow update: if (request.auth.uid != null && request.auth.uid == userID) || isAdminGlobal();
+        allow create, delete: if false;
+      }
+
+      match /earnings/{earningID} {
+        allow read: if request.auth.uid != null && request.auth.uid == userID;
+        allow delete: if false;
+        allow update: if false;
+      }
+
+      match /clappers/{clapperID} {
+        allow read: if true;
+        allow create, update: if (request.auth.uid != null && request.auth.uid == request.resource.data.clapperId)
+        allow delete: if false;
+
+        match /claps/{clapID} {
+          allow read: if true;
+          allow create: if (request.auth.uid != null && request.auth.uid == request.resource.data.uid)
+          allow delete, update: if false;
+        }
+      }
+
+      match /listingViews/{listingViewID} {
+        allow create: if request.auth.uid != null && request.auth.uid == userID;
+        allow read, update, delete: if false;
+      }
+
+      match /notifications/{notificationID} {
+        allow create, delete: if false;
+        allow update, read: if request.auth.uid != null && userID == request.auth.uid;
+      }
+    }
+
+    match /leads/{leadID} {
+      // client is not allowed to read, delete or update  
+      allow read, delete, update: if false;
+
+      // any user can create 
+      allow create: if true;
+    }
+
+    match /referrals/{referralID} {
+      // client is not allowed to read, delete or update  
+      allow read, delete, update: if false;
+
+      // any user can create 
+      allow create: if true;
+    }
+
+    match /publishedListings/{publishedListingID} {
+
+      allow read: if true;
+      allow delete, update, create: if false;
+    }
+
+    match /searches/{searchID} {
+
+      allow read, create: if true;
+      allow delete, update: if false;
+    }
+
+    match /listingDetails/{listingDetailID} {
+
+      allow read: if true;
+      allow delete, update, create: if false;
+    }
+
+    match /bookingRequests/{bookingRequestID} {
+
+      allow create: if request.auth.uid != null;
+      allow read, update: if request.auth.uid != null;
+      allow delete: if false;
+    }
+
+    match /bookingRequestsV2/{bookingRequestV2ID} {
+
+      allow create, read: if request.auth.uid != null;
+      allow update: if request.auth.uid != null && isAdminGlobal();
+      allow delete: if false;
+
+      match /influencerBookingRequests/{influencerBookingRequestID} {
+        allow read, create, delete, update: if request.auth.uid != null && isAdminGlobal();
+      }
+    }
+    
+    match /allListings/{uniqueListingID} {
+    
+
+      allow read: if request.auth.uid != null;
+      allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+      allow delete: if isAdminGlobal();
+
+      match /privateData/{privateDataID} {
+        // can only create your own user 
+        allow create, update, read: if isAdminGlobal() && request.auth.uid != null;
+
+        // can only update your own user 
+        allow delete: if false;
+      }
+
+      match /variants/{variantID} {
+        allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+        allow read: if true;
+        allow delete: if isAdminGlobal() && request.auth.uid != null;
+
+          match /variantOptions/{variantOptionID} {
+            allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+            allow read: if true;
+            allow delete: if isAdminGlobal() && request.auth.uid != null;
+        }
+      }
+    }
+
+    match /stays/{stayListingID} {
+
+      allow read: if request.auth.uid != null;
+      allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+      allow delete: if isAdminGlobal();
+
+      match /privateData/{privateDataID} {
+        // can only create your own user 
+        allow create, update, read: if isAdminGlobal() && request.auth.uid != null;
+
+        // can only update your own user 
+        allow delete: if false;
+      }
+
+      match /variants/{variantID} {
+        allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+        allow read: if true;
+        allow delete: if isAdminGlobal() && request.auth.uid != null;
+
+          match /variantOptions/{variantOptionID} {
+            allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+            allow read: if true;
+            allow delete: if isAdminGlobal() && request.auth.uid != null;
+        }
+      }      
+    }
+
+    match /errors/{errorID} {
+      allow read: if true;
+      allow create, update: if request.auth.uid != null;
+      allow delete: if false;
+    }
+
+    match /circuits/{circuitID} {
+      allow read: if request.auth.uid != null;
+      allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+      allow delete: if false;
+    }
+
+    match /groups/{groupID} {
+      allow read, create, update: if request.auth.uid != null;
+      allow delete: if false;
+
+      match /messages/{messageID} {
+        allow read: if request.auth.uid != null;
+        allow create: if request.auth.uid != null && request.resource.data.uid == request.auth.uid;
+        allow update, delete: if request.auth.uid != null && resource.data.uid == request.auth.uid;
+      }
+    }
+
+    match /circuitScrapperObjs/{circuitScrapperID} {
+
+      allow read, create, update: if isAdminGlobal();
+      allow delete: if false;
+    }
+
+    match /hotelScrapperObjs/{hotelScrapperID} {
+
+      allow read, create, update: if isAdminGlobal();
+      allow delete: if false;
+    }
+
+    match /ugcListings/{ugcListingId} {
+
+      allow read: if request.auth.uid != null;
+      allow create, update: if request.auth.uid != null;
+      allow delete: if false;
+    }
+
+    match /circuitPackets/{circuitPacketID} {
+
+
+      allow read: if request.auth.uid != null;
+      allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+      allow delete: if false;
+
+    }
+
+    match /stayPackets/{stayPacketID} {
+
+
+      allow read: if request.auth.uid != null;
+      allow create, update: if request.auth.uid != null && (isEditorGlobal() || isAdminGlobal());
+      allow delete: if false;
+
+    }
+
+    match /hotels/{hotelID} {
+
+      allow create, read, update: if request.auth.uid != null;
+      allow delete: if false;
+    }
+
+    match /help/{helpRequestID} {
+
+      allow create: if request.auth.uid != null;
+      allow read, update: if request.auth.uid != null;
+      allow delete: if false;
+    }
+
+    match /privacy/{policyRequestID} {
+
+      allow create, update, delete: if false;
+      allow read: if true;
+    }
+
+    match /travelDesk/{contentID} {
+
+      allow create, update, delete: if false;
+      allow read: if true;
+    }
+
+    match /accessCodes/{accessCodeID} {
+
+      allow create, update, delete: if false;
+      allow read: if true;
+    }
+
+    match /membershipRequests/{memberRequestID} {
+
+      allow create: if true;
+      allow read: if request.auth.uid != null;
+      allow update, delete: if false;
+    }
+
+    match /feedback/{feedbackID} {
+
+      allow create, update, read: if true;
+      allow delete: if false;
+    }
+
+    match /bookingLedger/{transactionId} {
+
+      
+
+      allow read: if request.auth.uid != null;
+      allow update: if request.auth.uid != null && isAdminGlobal();
+      allow delete, create: if false;
+    }
+
+    match /userLedger/{userAqId} {
+
+      allow read: if request.auth.uid != null;
+      allow delete, create, update: if false;
+    }
+
+    match /leaderBoard/{userLeadId} {
+
+      allow read: if true;
+      allow update: if request.auth.uid != null && isAdminGlobal();
+      allow delete, create: if false;
+    }
+
+    match /stores/{storeID} {
+      allow read: if request.auth.uid != null;
+      allow delete, create, update: if false;
+    }
+
+    match /{path=**}/blogs/{blogID} {
+      allow read: if request.auth.uid != null;
+    }
+
+    match /trips/{tripID} {
+      allow create, read, update: if request.auth.uid != null;
+      allow delete: if false;
+    }
+
+    match /{somePath=**}/views/{view} {
+      allow read: if request.auth.uid != null;
+    }
+
+    match /tripsV2/{tripID} {
+      allow read: if true;
+      allow create, update: if isAdminGlobal() || (request.auth.uid != null && request.resource.data.uid == request.auth.uid);
+      allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.uid) || isAdminGlobal();
+
+      match /views/{viewID} {
+        // allow read, create, update, delete: if true;
+        allow read: if request.auth.uid != null;
+        allow create: if request.auth.uid != null && request.resource.data.viewerId == request.auth.uid;
+        allow update, delete: if false;
+      }
+
+      match /listings/{collectionListingID} {
+        allow read: if request.auth.uid != null;
+        allow create: if isAdminGlobal() || (request.auth.uid != null && request.resource.data.uid == request.auth.uid);
+        allow update, delete: if isAdminGlobal() || (request.auth.uid != null && resource.data.uid == request.auth.uid);
+      }
+
+      match /googlePlaces/{placeID} {
+        allow read, create, update, delete: if request.auth.uid != null;
+      }
+    }
+
+    match /leadsV2/{leadID} {
+      allow create, update: if true;
+      allow delete: if false;
+      allow read: if request.auth.uid != null;
+    }
+
+    match /collections/{collectionID} {
+      allow read: if request.auth.uid != null;
+      allow create, update: if isAdminGlobal() || (request.auth.uid != null && request.resource.data.uid == request.auth.uid);
+      allow delete: if (request.auth.uid != null && request.auth.uid == resource.data.uid) || isAdminGlobal();
+
+      match /likes/{likeID} {
+        // allow read, create, update, delete: if true;
+        allow read: if request.auth.uid != null;
+        allow create: if request.auth.uid != null && request.auth.uid == request.resource.data.uid;
+        allow update, delete: if request.auth.uid != null && resource.data.uid == request.auth.uid;
+      }
+
+      match /views/{viewID} {
+        // allow read, create, update, delete: if true;
+        allow read: if request.auth.uid != null;
+        allow create: if request.auth.uid != null && request.resource.data.viewerId == request.auth.uid;
+        allow update, delete: if false;
+      }
+
+      match /listings/{collectionListingID} {
+        allow read: if request.auth.uid != null;
+        allow create: if isAdminGlobal() || (request.auth.uid != null && request.resource.data.uid == request.auth.uid);
+        allow update, delete: if isAdminGlobal() || (request.auth.uid != null && resource.data.uid == request.auth.uid);
+      }
+
+      match /googlePlaces/{placeID} {
+        allow read, create, update, delete: if request.auth.uid != null;
+      }
+
+      match /blogs/{blogID} {
+        allow create: if isAdminGlobal() || (request.auth.uid != null && request.resource.data.uid == request.auth.uid);
+        allow update, delete: if isAdminGlobal() || (request.auth.uid != null && resource.data.uid == request.auth.uid);
+      }
+    }
+
+  }
+}

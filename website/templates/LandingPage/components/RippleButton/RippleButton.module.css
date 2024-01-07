@@ -1,0 +1,66 @@
+.rippleBtnOuter {
+  /* margin: 100px auto; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  animation: ripple 0.6s linear infinite;
+  border-radius: 50%;
+  background: #0000009c;
+}
+
+.rippleBtn {
+  position: relative;
+}
+
+.rippleBtn::before {
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
+  border: 6px solid transparent;
+  background: linear-gradient(
+      180deg,
+      #600ff5,
+      #e44156,
+      #f4b436,
+      #ccdb2c,
+      #60c5d9
+    )
+    border-box;
+  content: "";
+  position: absolute;
+  top: -63px;
+  left: -35px;
+  right: 0;
+  bottom: 0;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(280, 210, 200, 0.1),
+      0 0 0 20px rgba(280, 210, 200, 0.1), 0 0 0 30px rgba(280, 210, 200, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(280, 210, 200, 0.1),
+      0 0 0 30px rgba(280, 210, 200, 0.1), 0 0 0 40px rgba(0, 18, 0, 0);
+  }
+}
+
+.rippleButton {
+  transform-origin: center;
+  animation: ripple 2s cubic-bezier(.65,0,.34,1) infinite;
+}
+
+@keyframes ripple {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}

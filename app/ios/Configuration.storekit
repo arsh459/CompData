@@ -1,0 +1,91 @@
+{
+  "identifier" : "B5712961",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "9BEB3465",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "DailyPass_99_0dTrial",
+      "referenceName" : "DailyPass_99_0dTrial",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "85D1047A",
+      "localizations" : [
+
+      ],
+      "name" : "Monthly Access, 1 day trial\nMonthly Access, 1 day trial\n",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "10.49",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "16358959",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "Monthly_999_0dTrial",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly_999_0dTrial",
+          "subscriptionGroupID" : "85D1047A",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "A55DEF70",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "Weekly_499_0dTrial",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Weekly_499_0dTrial",
+          "subscriptionGroupID" : "85D1047A",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 2
+  }
+}

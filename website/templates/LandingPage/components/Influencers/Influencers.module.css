@@ -1,0 +1,22 @@
+.mobileImageStyle span {
+  height: 900px !important;
+}
+
+.desktopImageStyle {
+  height: 650px !important;
+}
+
+.influencerContainer {
+  background: black;
+  /* filter: blur(8px);
+  -webkit-filter: blur(8px); */
+  text-align: center;
+}
+
+.boxShadow {
+  box-shadow: 0 0 150px -20px #607d8bab inset;
+}
+
+.p4 {
+  padding: 10px;
+}

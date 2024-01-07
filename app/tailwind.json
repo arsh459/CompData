@@ -1,0 +1,48 @@
+{
+	"flex-1": {
+		"style": {
+			"flexGrow": 1,
+			"flexShrink": 1,
+			"flexBasis": "0%"
+		}
+	},
+	"items-center": {
+		"style": {
+			"alignItems": "center"
+		}
+	},
+	"justify-center": {
+		"style": {
+			"justifyContent": "center"
+		}
+	},
+	"px-4": {
+		"style": {
+			"paddingLeft": 16,
+			"paddingRight": 16
+		}
+	},
+	"pb-2": {
+		"style": {
+			"paddingBottom": 8
+		}
+	},
+	"text-xl": {
+		"style": {
+			"fontSize": 20,
+			"lineHeight": 28
+		}
+	},
+	"font-extrabold": {
+		"style": {
+			"fontWeight": "800"
+		}
+	},
+	"iphoneX:text-2xl": {
+		"style": {
+			"fontSize": 24,
+			"lineHeight": 32
+		},
+		"media": "(min-width: 375px)"
+	}
+}

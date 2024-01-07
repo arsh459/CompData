@@ -1,0 +1,28 @@
+{
+  "cloudinary": {
+    "id": "cloudinary",
+    "key": "y9MP95UhEFJrl8y17sHWpq3bwKE"
+  },
+  "blog-holidaying-config": {
+    "status": {
+      "success": {}
+    }
+  },
+  "algolia": {
+    "app": "TJ6X71KNOT",
+    "key": "09f5a0e51bf0a08e150d60757da2e35b"
+  },
+  "someservice": {
+    "id": "mailchimp"
+  },
+  "mailchimp": {
+    "key": "17d24f97f96b6fdd3ff5ad83d208006f-us19"
+  },
+  "sendgrid": {
+    "id": "sendgrid",
+    "key": "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"
+  },
+  "authservice": {
+    "ci_token": "1//0gMmpidu3R2pCCgYIARAAGBASNwF-L9Ir_46TyK66fH8EDTUlyVPgw1N7tdPmdpaFbVwvX8asNjLvaR3pLq_-bV_l_MlDYlkvvRc"
+  }
+}

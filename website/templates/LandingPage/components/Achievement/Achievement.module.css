@@ -1,0 +1,41 @@
+.achievementContainer {
+  background: black;
+  color: white;
+}
+
+.mainTitle {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 116.3%;
+  letter-spacing: 0.02em;
+}
+
+.heading {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 42px;
+  line-height: 116.3%;
+  text-align: center;
+  letter-spacing: 0.02em;
+  /* text-shadow: 0 0 4px #ffffff0d, 0 0 11px #ffffff0d, 0 0 19px #ffffff0d,
+    0 0 4px #f09, 0 0 8px #f09, 0 0 9px #f09, 0 0 10px #f09, 0 0 15px #f09; */
+}
+
+.subHeading {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 116.3%;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.socailBoatMsg {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 116.3%;
+  text-align: center;
+  letter-spacing: 0.02em;
+}

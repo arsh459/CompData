@@ -1,0 +1,11 @@
+.mobileImageStyle span {
+  height: 900px !important;
+}
+
+.desktopImageStyle {
+  height: 650px !important;
+}
+
+.influencerContainer{
+  background:black;
+}

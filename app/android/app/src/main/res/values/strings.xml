@@ -1,0 +1,9 @@
+<resources>
+  <string name="app_name">Socialboat</string>
+  <string name="expo_splash_screen_resize_mode" translatable="false">cover</string>
+  <string moduleConfig="true" name="CodePushDeploymentKey">er_K4CNn4iH0u3Q69CuFZG68hyWcgNWEKXY9c</string>
+  <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+  <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCwOAgWacpSQ0HweK8aeqoRytapOgrfOGw</string>
+  <string name="facebook_app_id">1303481443920011</string>
+  <string name="facebook_client_token">6a5203a570ad4842a094d1ec7701efa2</string>
+</resources>

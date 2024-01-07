@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "holidaying-prod",
+    "dev": "vocal-pad-262908"
+  }
+}

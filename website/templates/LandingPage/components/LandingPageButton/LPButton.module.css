@@ -1,0 +1,41 @@
+.outer {
+  display: block;
+  width: 235px;
+  height: 59px;
+  margin: 10px auto;
+  border-radius: 50px;
+  background-image: linear-gradient(
+    90deg,
+    #600ff5 -4.86%,
+    #e44156 22.33%,
+    #f4b436 48.9%,
+    #ccdb2c 76.52%,
+    #60c5d9 102.97%
+  );
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.whiteBtn {
+  background: white;
+}
+
+.inner {
+  display: block;
+  width: 231px;
+  height: 55px;
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+}
+
+.innerText {
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 24.59px;
+}

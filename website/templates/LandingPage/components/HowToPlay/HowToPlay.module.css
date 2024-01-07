@@ -1,0 +1,65 @@
+.mobileImageStyle span {
+  height: 900px !important;
+}
+
+.desktopImageStyle {
+  height: 650px !important;
+}
+
+.influencerContainer {
+  background: black;
+}
+
+.cards {
+  width: 50%;
+  text-align: center;
+  border-radius: 35px;
+}
+
+.cardFitnessFun {
+  background: linear-gradient(
+    156.14deg,
+    rgba(255, 184, 0, 1) -3.12%,
+    rgba(241, 155, 56, 1) 23.26%,
+    rgba(63, 41, 17, 1) 74.32%,
+    rgba(0, 0, 0, 1) 98.35%
+  );
+  text-align: center;
+  border-radius: 35px;
+}
+
+.cardTask {
+  background: linear-gradient(
+    156.14deg,
+    rgba(134, 235, 255, 1) -3.12%,
+    rgba(96, 197, 217, 1) 23.26%,
+    rgba(29, 59, 65, 1) 74.32%,
+    rgba(0, 0, 0, 1) 98.35%
+  );
+  text-align: center;
+  border-radius: 35px;
+}
+
+.cardPoints {
+  background: linear-gradient(
+    156.14deg,
+    rgba(234, 252, 49, 1) -3.12%,
+    rgba(204, 219, 44, 1) 23.26%,
+    rgba(33, 35, 10, 1) 74.32%,
+    rgba(0, 0, 0, 1) 98.35%
+  );
+  text-align: center;
+  border-radius: 35px;
+}
+
+.cardLevels {
+  background: linear-gradient(
+    156.14deg,
+    rgba(159, 107, 255, 1) -3.12%,
+    rgba(100, 23, 235, 1) 23.26%,
+    rgba(20, 9, 40, 1) 74.32%,
+    rgba(0, 0, 0, 1) 98.35%
+  );
+  text-align: center;
+  border-radius: 35px;
+}

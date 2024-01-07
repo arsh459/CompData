@@ -1,0 +1,43 @@
+.heading {
+  text-align: center;
+  display: inline-block;
+}
+
+.lightHeaderText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 116.3%;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.subHeading {
+  font-size: 24px;
+  line-height: 31.03px;
+  font-weight: 400;
+  color: #a79f9f;
+}
+
+.large {
+  font-size: 72px;
+  line-height: 80.5px;
+  font-weight: 900;
+}
+
+.medium {
+  font-size: 48px;
+  line-height: 55.82px;
+  font-weight: 900;
+}
+
+.small {
+  padding-top: 30px;
+  font-size: 48px;
+  line-height: 53.66px;
+  font-weight: 900;
+}
+
+.lightText {
+  color: #a79f9f;
+}

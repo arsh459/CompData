@@ -1,0 +1,61 @@
+// import { useUserEvents } from "@hooks/editEvent/useUserEvents";
+// import { db } from "@config/firebase";
+// import { useEffect, useState } from "react";
+// import { collection, onSnapshot, doc } from "firebase/firestore";
+// // import { sbEventPayment } from "pages/api/payments/utils/interface";
+// import { Unsubscribe } from "firebase/auth";
+// import { MessageInterface } from "@templates/editEvent/Registrations/Message/DashboardMessage";
+// import { convertPayToMessage } from "./utils";
+// import { useEventKPIs } from "./useEventKPIs";
+// import { sbEventPayment } from "@utils/payments/interface";
+
+// export const useRegistrations = (uid: string) => {
+//   const { userEvents } = useUserEvents(uid);
+//   const [payEvents, setPayEvents] = useState<{
+//     [payId: string]: MessageInterface;
+//   }>({});
+
+//   const { earnings, views, students } = useEventKPIs(userEvents);
+
+//   useEffect(() => {
+//     try {
+//       // loop over events
+//       const unSubs: Unsubscribe[] = [];
+//       for (const userEvent of userEvents) {
+//         const payRef = collection(
+//           doc(collection(db, "sbEvents"), userEvent.id),
+//           "payments"
+//         );
+
+//         const unsub = onSnapshot(payRef, (querySnapshot) => {
+//           const remotePayments: { [payId: string]: MessageInterface } = {};
+//           querySnapshot.forEach((doc) => {
+//             const rmTmp = doc.data() as sbEventPayment;
+//             remotePayments[rmTmp.id] = convertPayToMessage(rmTmp, userEvent);
+//           });
+
+//           setPayEvents((prev) => ({ ...prev, ...remotePayments }));
+//         });
+
+//         if (unsub) {
+//           unSubs.push(unsub);
+//         }
+//       }
+
+//       return () => {
+//         for (const unSubListen of unSubs) {
+//           unSubListen();
+//         }
+//       };
+//     } catch (error) {
+//       console.log("error in getting events", error);
+//     }
+//   }, [userEvents]);
+
+//   return {
+//     payEvents,
+//     earnings,
+//     views,
+//     students,
+//   };
+// };

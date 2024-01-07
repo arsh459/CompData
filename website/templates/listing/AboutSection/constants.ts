@@ -1,0 +1,8 @@
+export const about = `Yoga Nidra, also known as yogic sleep, is a guided meditation technique, performed in savasana or resting position on your back. This guided meditation guides you through 5 stages to allow you to reboot and end the practice feeling completely rejuvenated.
+
+Therapeutic yoga classes are gentle and include yoga poses modified to individual’s needs, gentle movement sequences to help improve the body’s movement patterns, yogic breath techniques, and guided relaxation.  Each class is structured to address a region or system of the body that may need balancing for better health and well being.
+
+These classes are appropriate for individuals with musculoskeletal dis-ease or injury, neuromuscular issues, chronic pain, balance or movement deficits, anxiety or depression, respiratory issues, or other imbalances or dysfunctions that individuals may suffer.`;
+
+export const sampleText = `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`;
+export const sampleProfileText = `This is your place to give a short 180 character description. Talk about\n\n 1. Who you are?\n 2. What is your passion?\n 3. Why should people join your boat?`;

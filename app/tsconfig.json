@@ -1,0 +1,25 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "noUnusedLocals": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@hooks/*": ["src/hooks/*"],
+      "@models/*": ["src/models/*"],
+      "@config/*": ["src/config/*"],
+      "@routes/*": ["src/routes/*"],
+      "@screens/*": ["src/screens/*"],
+      "@modules/*": ["src/modules/*"],
+      "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@utils/*": ["src/utils/*"],
+      "@providers/*": ["src/providers/*"],
+      "@analytics/*": ["src/analytics/*"]
+    },
+    "typeRoots": ["./types", "./node_modules/@types"]
+  },
+  "exclude": ["node_modules", "ios"]
+}

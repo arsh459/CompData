@@ -1,0 +1,1 @@
+export const doctorsImg = "https://ik.imagekit.io/socialboat/Doctors_iS-NsQeea.png?updatedAt=1701204500936" 

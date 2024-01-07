@@ -1,0 +1,36 @@
+.flex-1 {
+  flex: 1 1 0%
+}
+
+.items-center {
+  align-items: center
+}
+
+.justify-center {
+  justify-content: center
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem
+}
+
+.font-extrabold {
+  font-weight: 800
+}
+
+@media (min-width: 375px) {
+  .iphoneX\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem
+  }
+}

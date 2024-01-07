@@ -1,0 +1,23 @@
+.mobileImageStyle span {
+  height: 900px !important;
+}
+
+.desktopImageStyle {
+  height: 650px !important;
+}
+
+.influencerContainer {
+  background: black;
+}
+
+.card1 {
+  background: linear-gradient(
+    156.14deg,
+    rgba(159, 107, 255, 0.78) -3.12%,
+    rgba(100, 23, 235, 0.78) 23.26%,
+    rgba(20, 9, 40, 0.78) 74.32%,
+    rgba(0, 0, 0, 0.78) 98.35%
+  );
+  text-align: center;
+  border-radius: 35px;
+}

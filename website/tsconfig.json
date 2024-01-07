@@ -1,0 +1,65 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@modules/*": [
+        "modules/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@templates/*": [
+        "templates/*"
+      ],
+      "@models/*": [
+        "models/*"
+      ],
+      "@layouts/*": [
+        "layouts/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@analytics/*": [
+        "analytics/*"
+      ]
+    },
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "templates/editEvent/Form/MediaGrid/MediaGrid.jsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
